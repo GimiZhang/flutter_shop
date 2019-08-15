@@ -4,6 +4,7 @@ import '../service/service_method.dart';
 import 'dart:convert';
 import 'home/home_function.dart';
 import 'home/home_add.dart';
+import 'home/home_recommend.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -25,12 +26,14 @@ class _HomepageState extends State<Homepage> {
             String addPicture = data['data']['advertesPicture']['PICTURE_ADDRESS'];
             String leaderImage = data['data']['shopInfo']['leaderImage'];
             String leaderPhone = data['data']['shopInfo']['leaderPhone'];
+            List<Map> recommendList = (data['data']['recommend'] as List).cast();
             return Column(
               children: <Widget>[
                 HomeSwipper(swiperList: swiper,),
                 HomeFuction(functionList:functionList,),
                 HomeAdd(addPicture: addPicture,),
-                HomePhone(leaderPhone: leaderPhone,leaderImage: leaderImage,)
+                HomePhone(leaderPhone: leaderPhone,leaderImage: leaderImage,),
+                HomeRecommend(recommendList: recommendList,)
               ],
             );
           }else{

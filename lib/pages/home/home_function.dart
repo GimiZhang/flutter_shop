@@ -21,7 +21,7 @@ class HomeFuction extends StatelessWidget {
             children: <Widget>[
               Image.network(
                 item['image'],
-                width: ScreenUtil().setWidth(210),
+                width: ScreenUtil().setWidth(120),
               ),
               Text(item['mallCategoryName'])
             ],
@@ -34,7 +34,7 @@ class HomeFuction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: ScreenUtil().setHeight(((functionList.length / 5)+1) * 200),
+      height: ScreenUtil().setHeight(600),
       padding: EdgeInsets.all(3.0),
       child: GridView.count(
         crossAxisCount: 5,
