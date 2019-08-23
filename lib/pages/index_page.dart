@@ -12,7 +12,7 @@ class IndexPage extends StatefulWidget {
   _IndexPageState createState() => _IndexPageState();
 }
 
-class _IndexPageState extends State<IndexPage> {
+class _IndexPageState extends State<IndexPage> with AutomaticKeepAliveClientMixin{
   List<BottomNavigationBarItem> bottomTabs = [
     BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), title: Text("首页")),
     BottomNavigationBarItem(
@@ -23,7 +23,7 @@ class _IndexPageState extends State<IndexPage> {
         icon: Icon(CupertinoIcons.profile_circled), title: Text("会员中心"))
   ];
 
-  List pageList = [Homepage(), CategoryPage(), CarPage(), MemberPage()];
+  List<Widget> pageList = [Homepage(), CategoryPage(), CarPage(), MemberPage()];
 
   int currentIndex = 0;
 
@@ -58,7 +58,14 @@ class _IndexPageState extends State<IndexPage> {
           });
         },
       ),
-      body: pageList[currentIndex],
+      body: IndexedStack(
+        index: currentIndex,
+        children: pageList,
+      ),
     );
   }
+
+  //切换tab 保持页面状态
+  @override
+  bool get wantKeepAlive => true;
 }
