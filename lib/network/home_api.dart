@@ -13,9 +13,9 @@ Future getHomePageContent(){
 
 
 //获取火爆专区数据
-Future getHotBelow(){
+Future getHotBelow(int page){
   Map<Object,Object> paramsMap = {
-    "page":1,
+    "page":page,
   };
   return request(servicePath['homePageBelowConten'], params: paramsMap);
 }

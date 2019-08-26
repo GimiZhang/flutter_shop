@@ -2,15 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_easyrefresh/material_footer.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_shop/network/home_api.dart';
 
 import 'home/home_add.dart';
 import 'home/home_floor.dart';
 import 'home/home_function.dart';
-import 'home/home_hot_goods.dart';
 import 'home/home_recommend.dart';
 import 'home/home_swipper.dart';
-import 'package:flutter_easyrefresh/material_footer.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -18,43 +18,22 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  List<Map> hotGoodsList = [];
+  int page = 1;
+
   EasyRefreshController _controller;
-  ScrollController _scrollController;
-
-  // 反向
-  bool _reverse = false;
-
-  // 方向
-  Axis _direction = Axis.vertical;
-  bool _enableInfiniteLoad = true;
-
-  // 控制结束
-  bool _enableControlFinish = false;
 
   // 任务独立
   bool _taskIndependence = false;
 
-  // 震动
-  bool _vibration = true;
-
-  // 是否开启刷新
-  bool _enableRefresh = true;
-
   // 是否开启加载
   bool _enableLoad = true;
-
-  // 顶部回弹
-  bool _topBouncing = true;
-
-  // 底部回弹
-  bool _bottomBouncing = true;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _controller = EasyRefreshController(); //刷新控制器
-    _scrollController = ScrollController();
   }
 
   @override
@@ -82,7 +61,7 @@ class _HomepageState extends State<Homepage> {
             enableControlFinishRefresh: true,
             controller: _controller,
             taskIndependence: _taskIndependence,
-              footer: MaterialFooter(),
+            footer: MaterialFooter(),
 //            footer: ClassicalFooter(
 //                loadedText: "上拉加载",
 //                loadReadyText: "松开加载",
@@ -127,12 +106,14 @@ class _HomepageState extends State<Homepage> {
                 FloorItem(
                   floorGoodsList: floor3,
                 ),
-                HotGoods()
+                _hotGoods()
               ],
             ),
-            onLoad: () async {
-              _controller.finishLoad(noMore: false);
-            },
+            onLoad: _enableLoad
+                ? () async {
+                    getHotGoods();
+                  }
+                : null,
           );
         } else {
           return Center(
@@ -141,5 +122,103 @@ class _HomepageState extends State<Homepage> {
         }
       },
     );
+  }
+
+  //火爆专区
+  Widget _hotGoods() {
+    return Container(
+      child: Column(
+        children: <Widget>[hotTitle, _wrapList()],
+      ),
+    );
+  }
+
+  //获取火爆专区数据
+  void getHotGoods() {
+    getHotBelow(page).then((val) {
+      var data = json.decode(val.toString());
+      List<Map> newGoods = (data['data'] as List).cast();
+      if (newGoods.length >= 20) {
+//        设置数据 将请求下来的数据设置到hotGoodsList中
+        setState(() {
+          hotGoodsList.addAll(newGoods);
+          page++; //页码加1
+        });
+      } else {
+        _enableLoad = false;
+      }
+
+      _controller.finishLoad(noMore: !_enableLoad);
+    });
+  }
+
+  //创建火爆专区title布局
+  Widget hotTitle = Container(
+    width: ScreenUtil().setWidth(1080),
+    margin: EdgeInsets.only(top: 10),
+    alignment: Alignment.center,
+    child: Text(
+      "火爆专区",
+      style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setSp(30)),
+    ),
+  );
+
+  //创建list布局
+  Widget _wrapList() {
+    if (hotGoodsList.length != 0) {
+      //遍历循环数据列表并转换为widget
+      List<Widget> listWidget = hotGoodsList.map((val) {
+        return InkWell(
+          onTap: () {},
+          child: Container(
+            width: ScreenUtil().setWidth(520),
+            padding: EdgeInsets.all(5),
+            margin: EdgeInsets.only(top: 3),
+            color: Colors.white,
+            child: Column(
+              children: <Widget>[
+                //图片
+                Image.network(val['image']),
+                //商品名称
+                Text(
+                  val['name'],
+                  style: TextStyle(
+                      color: Colors.pinkAccent,
+                      fontSize: ScreenUtil().setSp(40)),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                //商品价格
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text("￥${val['mallPrice']}",
+                        style: TextStyle(
+                            fontSize: ScreenUtil().setSp(30),
+                            color: Colors.black)),
+                    Text(
+                      "￥${val['price']}",
+                      style: TextStyle(
+                          fontSize: ScreenUtil().setSp(30),
+                          color: Colors.black26,
+                          decoration: TextDecoration.lineThrough),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      }).toList();
+
+      //画流布局
+      return Wrap(
+        spacing: 2, //2列
+        children: listWidget,
+      );
+    } else {
+      //无数据列表
+      return Text("");
+    }
   }
 }
