@@ -28,6 +28,8 @@ dependencies:
   flutter_screenutil: ^0.5.3 #屏幕适配
   flutter_easyrefresh: ^2.0.3 #刷新控件
   url_launcher: ^5.1.2 #拨打电话 发短信 email
+  toast: ^0.1.4
+  provide: ^ 1.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

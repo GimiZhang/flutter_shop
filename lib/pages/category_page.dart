@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'category/category_left.dart';
+
 
 class CategoryPage extends StatefulWidget {
   @override
@@ -8,8 +10,14 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("分类"),
+    return Container(
+      child: Row(
+        children: <Widget>[
+          CategoryLeft()
+        ],
+      ),
     );
   }
+
+
 }
