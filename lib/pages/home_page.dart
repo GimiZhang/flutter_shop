@@ -72,6 +72,7 @@ class _HomepageState extends State<Homepage> {
 //                enableInfiniteLoad: true),
             child: ListView(
               children: <Widget>[
+                SizedBox(height: 24,),
                 HomeSwipper(
                   swiperList: swiper,
                 ),

@@ -43,9 +43,6 @@ class _IndexPageState extends State<IndexPage> with AutomaticKeepAliveClientMixi
     ScreenUtil.instance = ScreenUtil(width:1080,height: 1920)..init(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("百姓生活+"),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
