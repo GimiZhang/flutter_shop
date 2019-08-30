@@ -19,3 +19,14 @@ Future getHotBelow(int page) {
 Future getCategory() {
   return requestPost(servicePath['getCategory']);
 }
+
+
+//获取分类列表数据
+Future getGoodsList(String categoryId,String categorySubId,int page) {
+  Map<Object, Object> paramsMap = {
+    "page": page,
+    "categoryId": categoryId,
+    "CategorySubId": categorySubId,
+  };
+  return requestPost(servicePath['getMallGoods'], params: paramsMap);
+}

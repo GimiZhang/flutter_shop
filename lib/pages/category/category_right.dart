@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provide/provide.dart';
 import 'package:flutter_shop/model/category_entity.dart';
 import 'package:flutter_shop/provide/child_category.dart';
+import 'category_goods_list.dart';
 
 class CategoryRight extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class _CategoryRightState extends State<CategoryRight> {
       children: <Widget>[
         //右侧上部分导航栏
         CategoryRightNav(),
+        CategoryGoodsList()
       ],
     );
   }
@@ -27,7 +29,6 @@ class CategoryRightNav extends StatefulWidget {
 }
 
 class _CategoryRightNavState extends State<CategoryRightNav> {
-  List list = ["名酒", "宝丰", "二锅头"];
 
   @override
   Widget build(BuildContext context) {

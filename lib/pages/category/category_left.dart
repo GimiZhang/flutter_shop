@@ -6,7 +6,6 @@ import 'package:flutter_shop/model/category_entity.dart';
 import 'dart:convert';
 import 'package:flutter_shop/network/home_api.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:toast/toast.dart';
 import '../../provide/child_category.dart';
 
 //分类左边列表
@@ -59,7 +58,7 @@ class _CategoryLeftState extends State<CategoryLeft> {
           style: TextStyle(fontSize: 15),
         ),
         decoration: BoxDecoration(
-            color: isClick ? Colors.black26 : Colors.white,
+            color: isClick ? Color.fromRGBO(236, 236, 236, 1.0) : Colors.white,
             border:
                 Border(bottom: BorderSide(width: 1, color: Colors.black12))),
       ),
@@ -74,6 +73,8 @@ class _CategoryLeftState extends State<CategoryLeft> {
       setState(() {
         leftCategorys = categoryEntity.data;
       });
+      Provide.value<ChildCategory>(context).getChildCategory(leftCategorys[0].bxMallSubDto);
+
     });
   }
 }
