@@ -147,6 +147,9 @@ class _HomepageState extends State<Homepage> {
         });
       } else {
         _enableLoad = false;
+        setState(() {
+          hotGoodsList.addAll(newGoods);
+        });
       }
 
       _controller.finishLoad(noMore: !_enableLoad);

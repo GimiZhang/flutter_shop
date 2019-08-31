@@ -25,8 +25,8 @@ Future getCategory() {
 Future getGoodsList(String categoryId,String categorySubId,int page) {
   Map<Object, Object> paramsMap = {
     "page": page,
-    "categoryId": categoryId,
-    "CategorySubId": categorySubId,
+    "categoryId": categoryId==null?"4":categoryId,
+    "CategorySubId": categorySubId==null?"":categorySubId,
   };
   return requestPost(servicePath['getMallGoods'], params: paramsMap);
 }

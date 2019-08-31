@@ -11,6 +11,8 @@ class CategoryRight extends StatefulWidget {
 }
 
 class _CategoryRightState extends State<CategoryRight> {
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
