@@ -5,9 +5,10 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_shop/entity_factory.dart';
 import 'package:flutter_shop/model/category_goods_entity.dart';
+import 'package:flutter_shop/provide/categroy_goods_list_provide.dart';
 import 'package:flutter_shop/utils/format_utils.dart';
 import 'package:provide/provide.dart';
-import 'package:flutter_shop/provide/categroy_goods_list_provide.dart';
+
 import '../../network/home_api.dart';
 
 class CategoryGoodsList extends StatefulWidget {
@@ -62,65 +63,76 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
   @override
   Widget build(BuildContext context) {
     return Provide<CategoryGoodsListProvider>(
-        builder: (context,child,catogoryGoodsList){
-          return Container(
-            width: ScreenUtil().setWidth(880),
-            height: ScreenUtil().setHeight(1530),
-            child: EasyRefresh(
-              enableControlFinishLoad: true,
-              enableControlFinishRefresh: true,
-              controller: _controller,
-              taskIndependence: _taskIndependence,
-              header: ClassicalHeader(
-                enableInfiniteRefresh: false,
-                refreshText: "下拉刷新",
-                refreshReadyText: "松开刷新",
-                refreshingText: "刷新中...",
-                refreshedText: "刷新完成",
-                refreshFailedText: "刷新失败",
-                noMoreText: "暂无数据",
-                infoText: "更新于" + formatDate(dateTime, [hh, ":", mm]),
-                infoColor: Colors.pink,
-                float: _headerFloat,
-                enableHapticFeedback: _vibration,
-              ),
-              footer: ClassicalFooter(
-                enableInfiniteLoad: _enableInfiniteLoad,
-                loadText: "上拉加载",
-                loadReadyText: "松手加载",
-                loadingText: "加载中",
-                loadedText: "加载完成",
-                loadFailedText: "加载失败",
-                noMoreText: "没有更多数据了",
-                infoText: "更新于" + formatDate(dateTime, [hh, ":", mm]),
-                infoColor: Colors.pink,
-                enableHapticFeedback: _vibration,
-              ),
-              child: ListView.builder(
-                  itemCount: catogoryGoodsList.categoryGoods.length,
-                  itemBuilder: (context, index) {
-                    return _goodsListItem(catogoryGoodsList.categoryGoods,index);
-                  }),
-              onLoad: Provide.value<CategoryGoodsListProvider>(context).enableLoad
-                  ? () async {
-                _getGoodsList();
-              }
-                  : null,
-              onRefresh: _enableRefresh
-                  ? () async {
-                Provide.value<CategoryGoodsListProvider>(context).page = 1;
-                _getGoodsList();
-              }
-                  : null,
-            ),
-          );
-        }
-    );
+        builder: (context, child, catogoryGoodsList) {
+      return Expanded(
+          child: Container(
+        width: ScreenUtil().setWidth(880),
+        child: EasyRefresh(
+          emptyWidget: catogoryGoodsList.categoryGoods.length == 0
+              ? Container(
+                  alignment: Alignment.center,
+                  width: ScreenUtil().setWidth(880),
+                  height: ScreenUtil().setHeight(1200),
+                  child: Text("暂无数据"),
+                )
+              : null,
+          enableControlFinishLoad: true,
+          enableControlFinishRefresh: true,
+          controller: _controller,
+          taskIndependence: _taskIndependence,
+          header: ClassicalHeader(
+            enableInfiniteRefresh: false,
+            refreshText: "下拉刷新",
+            refreshReadyText: "松开刷新",
+            refreshingText: "刷新中...",
+            refreshedText: "刷新完成",
+            refreshFailedText: "刷新失败",
+            noMoreText: "暂无数据",
+            infoText: "更新于" + formatDate(dateTime, [hh, ":", mm]),
+            infoColor: Colors.pink,
+            float: _headerFloat,
+            enableHapticFeedback: _vibration,
+          ),
+          footer: ClassicalFooter(
+            enableInfiniteLoad: _enableInfiniteLoad,
+            loadText: "上拉加载",
+            loadReadyText: "松手加载",
+            loadingText: "加载中",
+            loadedText: "加载完成",
+            loadFailedText: "加载失败",
+            noMoreText: "没有更多数据了",
+            infoText: "更新于" + formatDate(dateTime, [hh, ":", mm]),
+            infoColor: Colors.pink,
+            enableHapticFeedback: _vibration,
+          ),
+          child: ListView.builder(
+              itemCount: catogoryGoodsList.categoryGoods.length,
+              itemBuilder: (context, index) {
+                return _goodsListItem(catogoryGoodsList.categoryGoods, index);
+              }),
+          onLoad: Provide.value<CategoryGoodsListProvider>(context).enableLoad
+              ? () async {
+                  _getGoodsList();
+                }
+              : null,
+          onRefresh: _enableRefresh
+              ? () async {
+                  Provide.value<CategoryGoodsListProvider>(context).page = 1;
+                  _getGoodsList();
+                }
+              : null,
+        ),
+      ));
+    });
   }
 
   void _getGoodsList() async {
-    print("参数1：====="+Provide.value<CategoryGoodsListProvider>(context).categoryId+"--------"
-        +Provide.value<CategoryGoodsListProvider>(context).categorySubId+"----"+Provide.value<CategoryGoodsListProvider>(context).page.toString());
+    print("参数1：=====" +
+        Provide.value<CategoryGoodsListProvider>(context).categoryId +
+        "--------" +
+        Provide.value<CategoryGoodsListProvider>(context).categorySubId +
+        "----" +
+        Provide.value<CategoryGoodsListProvider>(context).page.toString());
     await getGoodsList(
             Provide.value<CategoryGoodsListProvider>(context).categoryId,
             Provide.value<CategoryGoodsListProvider>(context).categorySubId,
@@ -130,26 +142,32 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
       CategoryGoodsEntity categoryGoodsEntity = EntityFactory.generateOBJ(data);
       if (categoryGoodsEntity.data.length >= 20) {
         setState(() {
-          Provide.value<CategoryGoodsListProvider>(context).getCategoryGoodsList(categoryGoodsEntity.data);
+          Provide.value<CategoryGoodsListProvider>(context)
+              .getCategoryGoodsList(categoryGoodsEntity.data);
           if (Provide.value<CategoryGoodsListProvider>(context).page == 1) {
             _controller.resetLoadState();
             _controller.finishRefresh();
           } else {
             _controller.resetLoadState();
-            _controller.finishLoad(noMore: !Provide.value<CategoryGoodsListProvider>(context).enableLoad);
+            _controller.finishLoad(
+                noMore: !Provide.value<CategoryGoodsListProvider>(context)
+                    .enableLoad);
           }
           Provide.value<CategoryGoodsListProvider>(context).addPage();
         });
       } else {
         Provide.value<CategoryGoodsListProvider>(context).enableLoad = false;
         setState(() {
-          Provide.value<CategoryGoodsListProvider>(context).getCategoryGoodsList(categoryGoodsEntity.data);
+          Provide.value<CategoryGoodsListProvider>(context)
+              .getCategoryGoodsList(categoryGoodsEntity.data);
           if (Provide.value<CategoryGoodsListProvider>(context).page == 1) {
             _controller.resetLoadState();
             _controller.finishRefresh();
           } else {
             _controller.resetLoadState();
-            _controller.finishLoad(noMore: !Provide.value<CategoryGoodsListProvider>(context).enableLoad);
+            _controller.finishLoad(
+                noMore: !Provide.value<CategoryGoodsListProvider>(context)
+                    .enableLoad);
           }
         });
       }
@@ -158,7 +176,7 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
     });
   }
 
-  Widget _goodsListItem(List newList,int index) {
+  Widget _goodsListItem(List newList, int index) {
     return InkWell(
       onTap: () {},
       child: Container(

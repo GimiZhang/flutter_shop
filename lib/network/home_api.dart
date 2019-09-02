@@ -20,13 +20,13 @@ Future getCategory() {
   return requestPost(servicePath['getCategory']);
 }
 
-
 //获取分类列表数据
-Future getGoodsList(String categoryId,String categorySubId,int page) {
+Future getGoodsList(String categoryId, String categorySubId, int page) {
   Map<Object, Object> paramsMap = {
     "page": page,
-    "categoryId": categoryId==null?"4":categoryId,
-    "CategorySubId": categorySubId==null?"":categorySubId,
+    "categoryId": categoryId == null ? "4" : categoryId,
+    "categorySubId": categorySubId == null ? "" : categorySubId,
   };
+  print(paramsMap.toString());
   return requestPost(servicePath['getMallGoods'], params: paramsMap);
 }

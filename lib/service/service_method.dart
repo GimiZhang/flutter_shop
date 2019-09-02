@@ -12,6 +12,7 @@ Future requestPost(url, {Map<Object, Object> params}) async {
         ContentType.parse("application/x-www-form-urlencoded");
     if (params != null) {
       response = await dio.post(url, data: params);
+      print(url+"----"+params.toString());
     } else {
       response = await dio.post(url);
     }
