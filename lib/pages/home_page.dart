@@ -11,6 +11,7 @@ import 'home/home_floor.dart';
 import 'home/home_function.dart';
 import 'home/home_recommend.dart';
 import 'home/home_swipper.dart';
+import 'package:flutter_shop/routers/application.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -72,7 +73,9 @@ class _HomepageState extends State<Homepage> {
 //                enableInfiniteLoad: true),
             child: ListView(
               children: <Widget>[
-                SizedBox(height: 24,),
+                SizedBox(
+                  height: 24,
+                ),
                 HomeSwipper(
                   swiperList: swiper,
                 ),
@@ -173,7 +176,10 @@ class _HomepageState extends State<Homepage> {
       //遍历循环数据列表并转换为widget
       List<Widget> listWidget = hotGoodsList.map((val) {
         return InkWell(
-          onTap: () {},
+          onTap: () {
+            Application.router
+                .navigateTo(context, "/detail?id=${val['goodsId']}");
+          },
           child: Container(
             width: ScreenUtil().setWidth(520),
             padding: EdgeInsets.all(5),
