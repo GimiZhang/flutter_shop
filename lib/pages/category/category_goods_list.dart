@@ -127,12 +127,6 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
   }
 
   void _getGoodsList() async {
-    print("参数1：=====" +
-        Provide.value<CategoryGoodsListProvider>(context).categoryId +
-        "--------" +
-        Provide.value<CategoryGoodsListProvider>(context).categorySubId +
-        "----" +
-        Provide.value<CategoryGoodsListProvider>(context).page.toString());
     await getGoodsList(
             Provide.value<CategoryGoodsListProvider>(context).categoryId,
             Provide.value<CategoryGoodsListProvider>(context).categorySubId,

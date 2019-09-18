@@ -223,7 +223,7 @@ class _HomepageState extends State<Homepage> {
 
       //画流布局
       return Wrap(
-        spacing: 2, //2列
+        spacing: 2, //控件之间间距
         children: listWidget,
       );
     } else {

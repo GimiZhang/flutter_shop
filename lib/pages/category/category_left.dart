@@ -78,7 +78,7 @@ class _CategoryLeftState extends State<CategoryLeft> {
           style: TextStyle(fontSize: 15),
         ),
         decoration: BoxDecoration(
-            color: isClick ? Color.fromRGBO(236, 236, 236, 1.0) : Colors.white,
+            color: isClick ? Color.fromRGBO(236, 236, 236, 1.0) : Colors.white,//判断是否点击，如果是当前点击选中状态，设置背景颜色
             border:
                 Border(bottom: BorderSide(width: 1, color: Colors.black12))),
       ),

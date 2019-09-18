@@ -30,3 +30,13 @@ Future getGoodsList(String categoryId, String categorySubId, int page) {
   print(paramsMap.toString());
   return requestPost(servicePath['getMallGoods'], params: paramsMap);
 }
+
+
+//获取商品详情页面数据
+Future getGoodDetail(String goodId) {
+  Map<Object, Object> paramsMap = {
+    "goodId": goodId
+  };
+  print(paramsMap.toString());
+  return requestPost(servicePath['getGoodDetailById'], params: paramsMap);
+}
