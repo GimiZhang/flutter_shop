@@ -31,6 +31,10 @@ dependencies:
   fluttertoast: ^3.1.2 #吐司提示
   fluro: ^1.5.1 #路由配置
   provide: ^ 1.0.2 #动态数据传递(类似eventbus)
+  flutter_html: ^0.11.0 #类似于webview用来加载H5和web页面
+  shared_preferences: ^0.5.3 #数据本地化保存
+#  provider: ^3.1.0 #由于provide被弃用 改为新方法
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

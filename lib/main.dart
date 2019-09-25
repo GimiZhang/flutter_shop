@@ -9,16 +9,22 @@ import 'provide/good_detail_provide.dart';
 import 'package:fluro/fluro.dart';
 import 'routers/routers.dart';
 import 'routers/application.dart';
+import 'package:flutter_shop/provide/card.dart';
+import 'package:flutter_shop/provide/current_index.dart';
 
 void main() {
   var counter = Counter();
   var providers = Providers();
+  var currentIndexProvide = CurrentIndexProvide();
   var childCategory = ChildCategory();
   var detailInfoProvide = DetailInfoProvide();
   var categoryGoodsList = CategoryGoodsListProvider();
+  var cardProvide = CardProvide();
   providers..provide(Provider<Counter>.value(counter))
+  ..provide(Provider<CurrentIndexProvide>.value(currentIndexProvide))
   ..provide(Provider<CategoryGoodsListProvider>.value(categoryGoodsList))
   ..provide(Provider<DetailInfoProvide>.value(detailInfoProvide))
+  ..provide(Provider<CardProvide>.value(cardProvide))
   ..provide(Provider<ChildCategory>.value(childCategory));
   runApp(ProviderNode(child: MyApp(), providers: providers));
 }
